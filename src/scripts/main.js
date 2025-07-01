@@ -355,6 +355,32 @@ const people = [
 ];
 
 // eslint-disable-next-line no-console
-console.log(people); // you can remove it
 
-// write your code here
+for (const object of people) {
+  delete object.slug;
+  delete object.fatherName;
+  delete object.motherName;
+  object.age = object.died - object.born;
+  object.century = Math.ceil(object.died / 100);
+}
+
+const el = document.body.querySelector('table');
+
+for (const object of people) {
+  const newRow = document.createElement('tr');
+
+  el.insertAdjacentElement('beforeend', newRow);
+
+  for (const key in object) {
+    const newCell = document.createElement('td');
+
+    newRow.insertAdjacentElement('beforeend', newCell);
+    newCell.textContent = object[key];
+
+    if (object.sex === 'f') {
+      object.sex = 'Female';
+    } else {
+      object.sex = 'Male';
+    }
+  }
+}
