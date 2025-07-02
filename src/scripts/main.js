@@ -356,14 +356,6 @@ const people = [
 
 // eslint-disable-next-line no-console
 
-for (const object of people) {
-  delete object.slug;
-  delete object.fatherName;
-  delete object.motherName;
-  object.age = object.died - object.born;
-  object.century = Math.ceil(object.died / 100);
-}
-
 const el = document.body.querySelector('table');
 
 for (const object of people) {
@@ -371,16 +363,25 @@ for (const object of people) {
 
   el.insertAdjacentElement('beforeend', newRow);
 
-  for (const key in object) {
+  const copyObj = { ...object };
+
+  delete copyObj.fatherName;
+  delete copyObj.motherName;
+  delete copyObj.slug;
+  copyObj.age = object.died - object.born;
+  copyObj.century = Math.ceil(object.died / 100);
+
+  for (const key in copyObj) {
     const newCell = document.createElement('td');
 
     newRow.insertAdjacentElement('beforeend', newCell);
-    newCell.textContent = object[key];
 
-    if (object.sex === 'f') {
-      object.sex = 'Female';
-    } else {
-      object.sex = 'Male';
+    newCell.textContent = copyObj[key];
+
+    if (newCell.textContent === 'f') {
+      newCell.textContent = 'Female';
+    } else if (newCell.textContent === 'm') {
+      newCell.textContent = 'Male';
     }
   }
 }
